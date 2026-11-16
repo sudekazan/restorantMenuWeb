@@ -30,3 +30,4 @@ Müşteri masadaki QR'ı okutur, menüden sipariş verir, garson çağırır ve 
 
 ## Son kararlar
 - 2026-11-15: Yönetici paneli (menü, masalar ve QR, kullanıcılar, ayarlar, raporlar) bitti ve arayüzden denendi.
+- 2026-11-16: Gerçek kullanıcı olmadığı için iyzico'ya bağlanmayacak ve yayına alınmayacak; proje kullanılacağı zaman yayınlanacak. O zamana kadar sahte ödeme yeterli. Karanlık mod şimdilik yapılmayacak.
