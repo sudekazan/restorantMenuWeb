@@ -17,6 +17,8 @@ Müşteri masadaki QR'ı okutur, menüden sipariş verir, garson çağırır ve 
 - Ortam değişkenleri için `backend/.env.example`'a bak. `backend/.env` dosyasına dokunma, içeriğini yazma.
 - Frontend'de test yok; değişiklikten sonra `npm --prefix frontend run build` ile derlendiğini doğrula, sonra tarayıcıda dene.
 
+- Git deposu: `https://github.com/sudekazan/restorantMenuWeb.git`, ana dal `main`.
+
 ## Kurallar
 - Para tutarları kuruş olarak (tam sayı) saklanır.
 - Roller: `super_admin`, `admin`, `manager`, `waiter`, `kitchen`, `cashier`.
@@ -25,7 +27,6 @@ Müşteri masadaki QR'ı okutur, menüden sipariş verir, garson çağırır ve 
 
 ## Açık sorular
 - Tailwind'de `darkMode: 'class'` ayarlı ama hiçbir yerde `dark:` sınıfı ya da karanlık mod düğmesi yok. Karanlık mod istenecek mi, yoksa ayar kaldırılsın mı?
-- Proje henüz git deposu değil.
 
 ## Son kararlar
 - 2026-11-15: Yönetici paneli (menü, masalar ve QR, kullanıcılar, ayarlar, raporlar) bitti ve arayüzden denendi.
