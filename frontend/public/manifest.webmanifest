@@ -1,0 +1,11 @@
+{
+  "name": "QR Restoran Dijital Menü & Sipariş",
+  "short_name": "QR Menü",
+  "description": "Masadan QR kod ile hızlı sipariş, garson çağırma ve online ödeme",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fafaf9",
+  "theme_color": "#ea580c",
+  "icons": []
+}

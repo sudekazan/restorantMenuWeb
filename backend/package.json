@@ -1,0 +1,35 @@
+{
+  "name": "qr-restaurant-backend",
+  "version": "1.0.0",
+  "description": "QR tabanlı restoran/kafe masa sipariş ve ödeme sistemi - REST API",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "iyzipay": "^2.0.64",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.0",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.0",
+    "pdfkit": "^0.15.2",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1",
+    "zod": "^3.24.1"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
