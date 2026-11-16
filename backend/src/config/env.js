@@ -1,4 +1,8 @@
 import 'dotenv/config';
+import { fileURLToPath } from 'url';
+
+// Türkçe karakterli PDF'ler için projeyle gelen font (SIL OFL lisanslı Noto Sans).
+const DEFAULT_PDF_FONT = fileURLToPath(new URL('../../assets/fonts/NotoSans-Regular.ttf', import.meta.url));
 
 const required = ['MONGODB_URI', 'JWT_SECRET'];
 const missing = required.filter((key) => !process.env[key]);
@@ -30,5 +34,5 @@ export const env = Object.freeze({
   }),
   uploadDir: process.env.UPLOAD_DIR || 'uploads',
   timezone: process.env.APP_TIMEZONE || 'Europe/Istanbul',
-  pdfFontPath: process.env.PDF_FONT_PATH || '',
+  pdfFontPath: process.env.PDF_FONT_PATH || DEFAULT_PDF_FONT,
 });

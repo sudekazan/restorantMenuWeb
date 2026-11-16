@@ -12,14 +12,14 @@ export function generateQrPng(table) {
 
 /**
  * Masa QR kartlarını A4 PDF olarak üretir (sayfa başına 2x3 kesilebilir kart).
- * Türkçe karakterler için PDF_FONT_PATH ile bir TTF font verilmezse
+ * Türkçe karakterler için TTF font kullanılır (varsayılan: assets/fonts/NotoSans-Regular.ttf). Font bulunamazsa
  * metinler ASCII'ye çevrilir (PDFKit'in gömülü Helvetica fontu ş/ğ/ı desteklemez).
  */
 export async function generateTablesQrPdf({ restaurant, tables }) {
   const doc = new PDFDocument({
     size: 'A4',
     margin: 36,
-    info: { Title: transliterateTR(`${restaurant.name} - Masa QR Kodlari`), Author: 'QR Menu' },
+    info: { Title: `${restaurant.name} - Masa QR Kodları`, Author: 'QR Menu' },
   });
 
   const hasFont = env.pdfFontPath && fs.existsSync(env.pdfFontPath);
