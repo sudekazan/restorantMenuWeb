@@ -91,7 +91,7 @@ export default function WaiterTab({ activeCall, sendingCall, onTriggerCall }) {
             <span>Tek Dokunuşla Servis</span>
           </h2>
           <p className="text-xs text-ink-faint mt-0.5">
-            Seçiminiz anında Socket.IO üzerinden personel ekranına düşer.
+            Seçiminiz anında personele iletilir.
           </p>
         </div>
 

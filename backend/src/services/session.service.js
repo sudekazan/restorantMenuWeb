@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { Order, Payment, Restaurant, Table, TableSession } from '../models/index.js';
+import { Order, Payment, Restaurant, Table, TableSession, WaiterCall } from '../models/index.js';
 import { ACTIVE_SESSION_STATUSES } from '../models/TableSession.js';
 import { AppError } from '../utils/AppError.js';
 import { EVENTS, emitToCustomer, emitToStaff } from '../sockets/emitter.js';
@@ -113,6 +113,21 @@ export async function closeSession({ sessionId, restaurantId, force = false }) {
   await session.save();
 
   await Table.updateOne({ _id: session.table }, { status: 'available', currentSession: null });
+
+  // Masa boşaldı: bu masada açık kalan garson çağrılarını da kapat.
+  const openCalls = await WaiterCall.find({ restaurant: restaurantId, table: session.table, status: { $ne: 'resolved' } });
+  if (openCalls.length) {
+    const now = new Date();
+    await WaiterCall.updateMany(
+      { _id: { $in: openCalls.map((c) => c._id) } },
+      { $set: { status: 'resolved', resolvedAt: now } }
+    );
+    openCalls.forEach((call) => {
+      emitToStaff(restaurantId, EVENTS.WAITER_CALL_UPDATED, {
+        _id: call._id, table: call.table, type: call.type, status: 'resolved', acknowledgedBy: call.acknowledgedBy,
+      });
+    });
+  }
 
   emitToStaff(restaurantId, EVENTS.TABLE_UPDATED, { tableId: session.table, status: 'available', sessionId: null });
   emitToCustomer(

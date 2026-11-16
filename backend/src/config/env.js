@@ -10,7 +10,7 @@ if (missing.length) {
   throw new Error(`Eksik ortam değişkenleri: ${missing.join(', ')} (.env dosyasını kontrol edin)`);
 }
 
-const port = Number(process.env.PORT) || 5000;
+const port = Number(process.env.PORT) || 5050;
 
 export const env = Object.freeze({
   nodeEnv: process.env.NODE_ENV || 'development',

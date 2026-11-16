@@ -4,7 +4,7 @@
     {
       "name": "backend",
       "runtimeExecutable": "env",
-      "runtimeArgs": ["PORT=5050", "npm", "--prefix", "backend", "run", "dev"],
+      "runtimeArgs": ["PORT=5050", "API_BASE_URL=http://localhost:5050", "npm", "--prefix", "backend", "run", "dev"],
       "port": 5050
     },
     {
