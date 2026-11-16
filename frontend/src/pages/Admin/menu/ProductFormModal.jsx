@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ImagePlus, Loader2, X } from 'lucide-react';
+import { ImagePlus, Loader2, Trash2, Undo2, X } from 'lucide-react';
 import Modal from '../../../components/ui/Modal.jsx';
 import { kurusToInput, parseTlToKurus } from '../../../lib/format.js';
 import OptionGroupsEditor, { groupsToForm, groupsToPayload, validateGroups } from './OptionGroupsEditor.jsx';
@@ -47,7 +47,7 @@ function validateForm(form) {
 
 /**
  * Ürün ekleme / düzenleme penceresi.
- * onSubmit(payload, imageFile) Promise döner; görsel, ürün kaydedildikten sonra ayrı yüklenir.
+ * onSubmit(payload, imageFile, removeImage) Promise döner; görsel, ürün kaydedildikten sonra ayrı yüklenir ya da kaldırılır.
  */
 export default function ProductFormModal({ open, product, categories, defaultCategoryId, onClose, onSubmit }) {
   const [form, setForm] = useState(() => initialForm(product, defaultCategoryId));
@@ -57,6 +57,7 @@ export default function ProductFormModal({ open, product, categories, defaultCat
   const [busy, setBusy] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState('');
+  const [removeImage, setRemoveImage] = useState(false);
   const fileRef = useRef(null);
 
   useEffect(() => {
@@ -66,6 +67,7 @@ export default function ProductFormModal({ open, product, categories, defaultCat
     setGroups(groupsToForm(product?.optionGroups));
     setShowGroupErrors(false);
     setImageFile(null);
+    setRemoveImage(false);
   }, [open, product, defaultCategoryId]);
 
   useEffect(() => {
@@ -102,6 +104,7 @@ export default function ProductFormModal({ open, product, categories, defaultCat
     }
     setErrors((er) => ({ ...er, image: undefined }));
     setImageFile(file);
+    setRemoveImage(false);
   };
 
   const handleSubmit = async (e) => {
@@ -129,13 +132,14 @@ export default function ProductFormModal({ open, product, categories, defaultCat
     if (form.calories !== '') payload.calories = Number(form.calories);
     setBusy(true);
     try {
-      await onSubmit(payload, imageFile);
+      await onSubmit(payload, imageFile, removeImage);
     } finally {
       setBusy(false);
     }
   };
 
-  const shownImage = preview || product?.imageUrl || '';
+  const savedImage = removeImage ? '' : product?.imageUrl || '';
+  const shownImage = preview || savedImage;
   const groupErrors = showGroupErrors ? validateGroups(groups) : {};
   const inputCls = (key) => `${inputClass} ${errors[key] ? inputErrorClass : ''}`;
 
@@ -181,13 +185,27 @@ export default function ProductFormModal({ open, product, categories, defaultCat
                   Seçimi Kaldır
                 </button>
               )}
+              {!imageFile && savedImage && (
+                <button type="button" onClick={() => setRemoveImage(true)} className={secondaryBtn}>
+                  <Trash2 className="w-4 h-4" />
+                  Görseli Kaldır
+                </button>
+              )}
+              {!imageFile && removeImage && (
+                <button type="button" onClick={() => setRemoveImage(false)} className={secondaryBtn}>
+                  <Undo2 className="w-4 h-4" />
+                  Geri Al
+                </button>
+              )}
             </div>
             <input ref={fileRef} type="file" accept={IMAGE_TYPES.join(',')} onChange={pickImage} className="sr-only" tabIndex={-1} aria-label="Ürün görseli seç" />
           </div>
           {errors.image ? (
             <p className="text-xs text-rose-600">{errors.image}</p>
           ) : (
-            <p className="text-xs text-ink-faint">JPG, PNG veya WEBP, en fazla 3 MB. Kaydettiğinizde yüklenir.</p>
+            <p className="text-xs text-ink-faint">
+              {removeImage && !imageFile ? 'Görsel, kaydettiğinizde kaldırılır.' : 'JPG, PNG veya WEBP, en fazla 3 MB. Kaydettiğinizde yüklenir.'}
+            </p>
           )}
         </div>
 

@@ -162,6 +162,7 @@ export const adminApi = {
     form.append('image', file);
     return apiFetch(`/admin/products/${id}/image`, { method: 'POST', body: form, isForm: true, auth: true });
   },
+  deleteProductImage: (id) => apiFetch(`/admin/products/${id}/image`, { method: 'DELETE', auth: true }),
 
   // Masalar & QR
   listTables: () => apiFetch('/admin/tables', { auth: true }),

@@ -73,6 +73,20 @@ export async function uploadImage(req, res) {
   ok(res, product);
 }
 
+/** Ürün görselini kaldırır (dosyayı da siler). */
+export async function deleteImage(req, res) {
+  const product = await Product.findOne({ _id: req.params.id, restaurant: req.restaurantId });
+  if (!product) throw AppError.notFound('Ürün bulunamadı.');
+
+  const oldImage = product.imagePublicId;
+  product.imageUrl = undefined;
+  product.imagePublicId = undefined;
+  await product.save();
+  await removeProductImage(oldImage);
+
+  ok(res, product);
+}
+
 /** Mutfak: "tükendi" / "tekrar mevcut" */
 export async function setAvailability(req, res) {
   const product = await Product.findOneAndUpdate(

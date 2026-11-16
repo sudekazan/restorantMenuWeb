@@ -121,7 +121,7 @@ export default function MenuSection() {
   };
 
   /* ---------- Ürünler ---------- */
-  const saveProduct = async (payload, imageFile) => {
+  const saveProduct = async (payload, imageFile, removeImage = false) => {
     const editing = productForm?.product;
     let saved;
     try {
@@ -138,12 +138,19 @@ export default function MenuSection() {
       } catch (err) {
         imageFailed = err.message || 'Görsel yüklenemedi.';
       }
+    } else if (removeImage && saved.imageUrl) {
+      try {
+        // Silinen alan JSON'da gelmez; listedeki eski görseli de temizlemek için açıkça boşalt.
+        saved = { ...(await adminApi.deleteProductImage(saved._id)), imageUrl: undefined };
+      } catch (err) {
+        imageFailed = err.message || 'Görsel kaldırılamadı.';
+      }
     }
 
     setProducts((prev) => (editing ? prev.map((p) => (p._id === saved._id ? { ...p, ...saved } : p)) : [...prev, saved]));
     setProductForm(null);
     if (imageFailed) {
-      toast({ title: 'Ürün kaydedildi ama görsel yüklenemedi', description: `${imageFailed} Ürünü düzenleyip tekrar deneyin.`, variant: 'error' });
+      toast({ title: removeImage ? 'Ürün kaydedildi ama görsel kaldırılamadı' : 'Ürün kaydedildi ama görsel yüklenemedi', description: `${imageFailed} Ürünü düzenleyip tekrar deneyin.`, variant: 'error' });
     } else {
       toast({ title: editing ? 'Ürün güncellendi' : 'Ürün eklendi', variant: 'success', duration: 2500 });
     }

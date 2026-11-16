@@ -51,6 +51,7 @@ router.get('/products/:id', id, product.getProduct);
 router.patch('/products/:id', validate({ params: idParam, body: productUpdateSchema }), product.updateProduct);
 router.delete('/products/:id', id, product.deleteProduct);
 router.post('/products/:id/image', id, uploadProductImage, product.uploadImage);
+router.delete('/products/:id/image', id, product.deleteImage);
 
 // Masalar & QR
 router.get('/tables', table.listTables);
